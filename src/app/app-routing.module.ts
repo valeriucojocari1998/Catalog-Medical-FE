@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WrapperComponent } from './core/layout/wrapper/wrapper.component';
 
-const routes: Routes = [
+const ROUTES: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {
@@ -15,21 +15,19 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('./features/home/home-routing.module').then(
-            (c) => c.HomeRoutingModule
-          ),
+          import('./features/home/home.module').then((c) => c.HomeModule),
       },
     ],
   },
   {
     path: '**',
-    redirectTo: '/home',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(ROUTES)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
