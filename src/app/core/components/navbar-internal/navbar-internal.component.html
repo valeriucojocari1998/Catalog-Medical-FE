@@ -3,11 +3,11 @@
         Catalog Medical
     </button>
     <div class="navbar-actions" fxLayout="row" fxLayoutGap="30px">
-        <!-- <button mat-button class="navbar-link button-expand-animation" [routerLink]="['/about']">
-            about
-        </button> -->
-        <button mat-button class="navbar-link button-expand-animation" [routerLink]="['/login']">
-            User Action
+        <button mat-button class="navbar-link button-expand-animation" [routerLink]="['/patients']">
+            Patients
+        </button>
+        <button mat-button class="navbar-link button-expand-animation" (click)="logout()">
+            Logout
         </button>
     </div>
 </div>

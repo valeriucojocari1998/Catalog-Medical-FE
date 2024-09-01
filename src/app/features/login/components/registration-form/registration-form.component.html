@@ -1,0 +1,63 @@
+<form fxLayout="column" fxLayoutGap="24px" fxFlex="100" fxLayoutAlign="start center" class="page-content"
+  [formGroup]="registrationForm" (submit)="submit()">
+  <div class="page-title">Sign Up</div>
+  <div fxLayout="column">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>User Name</mat-label>
+        <input matInput type="text" required placeholder="" formControlName="userName" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" required placeholder="" formControlName="password" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" required placeholder="" formControlName="name" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Surname</mat-label>
+        <input matInput type="text" required placeholder="" formControlName="surname" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="text" required placeholder="" formControlName="email" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input matInput type="text" required placeholder="" formControlName="phone" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Doctor Type</mat-label>
+        <mat-select required placeholder="" formControlName="doctorType">
+          <mat-option *ngFor="let option of DOCTOR_TYPES" [value]="option">
+            {{ option | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <ng-container *ngIf="getDoctorTypeValue() === DOCTOR_TYPE.Other">
+      <div>
+        <mat-form-field appearance="outline">
+          <mat-label>Other Type</mat-label>
+          <input matInput type="otherType" placeholder="" formControlName="otherType" />
+        </mat-form-field>
+      </div>
+    </ng-container>
+  </div>
+  <div>
+    <button mat-button type="submit">Submit</button>
+  </div>
+</form>

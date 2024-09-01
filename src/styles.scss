@@ -1,4 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+@import "src/assets/colors.scss";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.page-title {
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: $text-label;
+    letter-spacing: 0.5rem;
+}
+
+.page-content {
+    padding: 24px 0;
+}

@@ -1,3 +1,23 @@
-<p>
-  login-form works!
-</p>
+<form fxLayout="column" fxLayoutGap="24px" fxFlex="100" fxLayoutAlign="start center" class="page-content"
+    [formGroup]="loginForm" (submit)="submit()">
+    <div class="page-title">
+        Sign In
+    </div>
+    <div fxLayout="column">
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>User Name</mat-label>
+                <input matInput type="text" required placeholder="" formControlName="userName">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" required placeholder="" formControlName="password">
+            </mat-form-field>
+        </div>
+    </div>
+    <div>
+        <button mat-button type="submit">Submit</button>
+    </div>
+</form>

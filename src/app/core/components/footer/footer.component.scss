@@ -1,0 +1,18 @@
+@import "src/assets/colors.scss";
+
+.footer-body {
+  width: 100%;
+  height: fit-content;
+  padding: 0 40px;
+  background-color: $background-second;
+  color: $text-color;
+  
+  .footer-left {
+    .footer-text {
+      font-size: 14px;
+      font-weight: 400;
+      color: $text-label;
+      padding: 2px;
+    }
+  }
+}
