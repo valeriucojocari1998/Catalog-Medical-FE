@@ -6,8 +6,10 @@ import {
   AppLogoutAction,
 } from './app.actions';
 import { throwError } from 'rxjs';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { AuthorizationService } from '../shared/services/authorization.service';
+import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
+import { AuthorizationService } from '../core/services/authorization.service';
+import { LocalStorageService } from '../core/services/local-storage.service';
+import { Router } from '@angular/router';
 
 export interface AppStateModel {
   token: string | null;
@@ -24,8 +26,29 @@ export interface AppStateModel {
   },
 })
 @Injectable()
-export class AppState {
-  constructor(private authorizationService: AuthorizationService) {}
+export class AppState implements NgxsOnInit {
+  constructor(
+    private authorizationService: AuthorizationService,
+    private localStorageService: LocalStorageService,
+    private router: Router
+  ) {}
+
+  ngxsOnInit(ctx: StateContext<any>): void {
+    const token = this.localStorageService.getToken();
+    const userName = this.localStorageService.getUsername();
+    if (token && userName) {
+      this.updateState({
+        token,
+        userName,
+        isAuthenticated: true,
+      });
+      ctx.setState({
+        token,
+        userName,
+        isAuthenticated: true,
+      });
+    }
+  }
 
   @Selector()
   static isAuthenticated(state: AppStateModel): boolean {
@@ -42,18 +65,27 @@ export class AppState {
     return state.userName;
   }
 
+  private updateState(state: Partial<AppStateModel>) {
+    this.localStorageService.setToken(state.token!);
+    this.localStorageService.setUsername(state.userName!);
+  }
+
   @Action(AppLoginAction)
   login(
-    { setState }: StateContext<AppStateModel>,
+    { patchState }: StateContext<AppStateModel>,
     { payload }: AppLoginAction
   ) {
     return this.authorizationService.LoginRequest(payload).pipe(
       tap((result: any) => {
-        setState({
+        const newState: AppStateModel = {
           token: result.token,
           userName: payload.userName,
           isAuthenticated: true,
-        });
+        };
+        patchState(newState);
+        this.updateState(newState);
+        // Reload the page after successful login
+        this.router.navigate(['/home-internal']);
       }),
       catchError((error) => {
         console.error('Login failed', error);
@@ -64,16 +96,13 @@ export class AppState {
 
   @Action(AppRegisterAction)
   register(
-    { setState }: StateContext<AppStateModel>,
+    { dispatch }: StateContext<AppStateModel>,
     { payload }: AppRegisterAction
   ) {
     return this.authorizationService.RegistrationRequest(payload).pipe(
-      tap((result: any) => {
-        setState({
-          token: result.token,
-          userName: payload.userName,
-          isAuthenticated: true,
-        });
+      tap(() => {
+        // On successful registration, dispatch the login action
+        dispatch(new AppLoginAction(payload));
       }),
       catchError((error) => {
         console.error('Registration failed', error);
@@ -84,13 +113,17 @@ export class AppState {
 
   @Action(AppLogoutAction)
   logout({ setState }: StateContext<AppStateModel>) {
+    console.log('here before');
     return this.authorizationService.LogoutRequest().pipe(
       tap(() => {
+        console.log('here');
         setState({
           token: null,
           userName: null,
           isAuthenticated: false,
         });
+        this.localStorageService.clear();
+        this.router.navigate(['/home']);
       }),
       catchError((error) => {
         console.error('Logout failed', error);

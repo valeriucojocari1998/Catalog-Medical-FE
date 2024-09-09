@@ -1,18 +1,27 @@
-export class LoadPatients {
-  static readonly type = '[Patient] Load Patients';
+import { PatientFilterRequest } from '../models/patient-filter-request';
+import { Patient } from '../models/patient';
+
+export class GetPatients {
+  static readonly type = '[Patient] Get Patients';
+  constructor(public filter?: PatientFilterRequest) {}
+}
+
+export class GetPatientById {
+  static readonly type = '[Patient] Get Patient By ID';
+  constructor(public id: string) {}
 }
 
 export class AddPatient {
   static readonly type = '[Patient] Add Patient';
-  constructor(public payload: { patient: any }) {}
+  constructor(public request: Partial<Patient>) {} // Create request uses partial fields
 }
 
 export class UpdatePatient {
   static readonly type = '[Patient] Update Patient';
-  constructor(public payload: { patient: any }) {}
+  constructor(public request: Patient) {}
 }
 
 export class DeletePatient {
   static readonly type = '[Patient] Delete Patient';
-  constructor(public payload: { id: number }) {}
+  constructor(public id: string) {}
 }

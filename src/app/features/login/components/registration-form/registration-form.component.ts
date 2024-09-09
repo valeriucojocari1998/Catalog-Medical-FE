@@ -39,7 +39,6 @@ export class RegistrationFormComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-    console.log(this.registrationForm);
   }
 
   buildForm(): void {

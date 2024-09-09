@@ -1,25 +1,36 @@
+// services/patient.service.ts
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Patient } from '../models/patient';
+import { PatientFilterRequest } from '../models/patient-filter-request';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PatientService {
-  constructor() {}
+  private apiUrl = `${environment.apiUrl}api/patients`;
 
-  getPatients(): Observable<unknown[]> {
-    return of();
+  constructor(private http: HttpClient) {}
+
+  getPatients(filter?: PatientFilterRequest): Observable<Patient[]> {
+    return this.http.get<Patient[]>(this.apiUrl, { params: filter as any });
   }
 
-  addPatient(patient: any): Observable<unknown> {
-    return of();
+  getPatientById(id: string): Observable<Patient> {
+    return this.http.get<Patient>(`${this.apiUrl}/${id}`);
   }
 
-  updatePatient(patient: any): Observable<unknown> {
-    return of();
+  addPatient(request: Partial<Patient>): Observable<void> {
+    return this.http.post<void>(this.apiUrl, request);
   }
 
-  deletePatient(id: number): Observable<unknown> {
-    return of();
+  updatePatient(request: Patient): Observable<void> {
+    return this.http.put<void>(this.apiUrl, request);
+  }
+
+  deletePatient(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

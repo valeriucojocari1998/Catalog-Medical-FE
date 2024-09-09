@@ -1,21 +1,25 @@
+// store/patient.state.ts
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { PatientService } from '../services/patient.service';
+import { Patient } from '../models/patient';
+import { tap } from 'rxjs/operators';
 import {
-  LoadPatients,
+  GetPatients,
+  GetPatientById,
   AddPatient,
   UpdatePatient,
   DeletePatient,
 } from './patient.actions';
-import { tap } from 'rxjs';
+import { PatientFilterRequest } from '../models/patient-filter-request';
 
 export interface PatientStateModel {
-  patients: unknown[];
-  selectedPatient: any;
+  patients: Patient[];
+  selectedPatient: Patient | null;
 }
 
 @State<PatientStateModel>({
-  name: 'patient',
+  name: 'patients',
   defaults: {
     patients: [],
     selectedPatient: null,
@@ -26,73 +30,45 @@ export class PatientState {
   constructor(private patientService: PatientService) {}
 
   @Selector()
-  static patients(state: PatientStateModel) {
+  static getPatients(state: PatientStateModel): Patient[] {
     return state.patients;
   }
 
-  @Action(LoadPatients)
-  loadPatients({ patchState }: StateContext<PatientStateModel>) {
-    return this.patientService.getPatients().pipe(
-      tap((result) => {
-        patchState({
-          patients: result,
-        });
+  @Selector()
+  static getSelectedPatient(state: PatientStateModel): Patient | null {
+    return state.selectedPatient;
+  }
+
+  @Action(GetPatients)
+  getPatients(ctx: StateContext<PatientStateModel>, action: GetPatients) {
+    return this.patientService.getPatients(action.filter).pipe(
+      tap((patients: Patient[]) => {
+        ctx.patchState({ patients });
+      })
+    );
+  }
+
+  @Action(GetPatientById)
+  getPatientById(ctx: StateContext<PatientStateModel>, action: GetPatientById) {
+    return this.patientService.getPatientById(action.id).pipe(
+      tap((patient: Patient) => {
+        ctx.patchState({ selectedPatient: patient });
       })
     );
   }
 
   @Action(AddPatient)
-  addPatient(
-    { getState, patchState }: StateContext<PatientStateModel>,
-    { payload }: AddPatient
-  ) {
-    return this.patientService.addPatient(payload.patient).pipe(
-      tap((newPatient) => {
-        const state = getState();
-        patchState({
-          patients: [...state.patients, newPatient],
-        });
-      })
-    );
+  addPatient(ctx: StateContext<PatientStateModel>, action: AddPatient) {
+    return this.patientService.addPatient(action.request);
   }
 
   @Action(UpdatePatient)
-  updatePatient(
-    { getState, setState }: StateContext<PatientStateModel>,
-    { payload }: UpdatePatient
-  ) {
-    return this.patientService.updatePatient(payload.patient).pipe(
-      tap((updatedPatient) => {
-        const state = getState();
-        const patients = [...state.patients];
-        // const patientIndex = patients.findIndex(
-        //   (item) => item['id'] === payload.patient.id
-        // );
-        // patients[patientIndex] = updatedPatient;
-        // setState({
-        //   ...state,
-        //   patients,
-        // });
-      })
-    );
+  updatePatient(ctx: StateContext<PatientStateModel>, action: UpdatePatient) {
+    return this.patientService.updatePatient(action.request);
   }
 
   @Action(DeletePatient)
-  deletePatient(
-    { getState, setState }: StateContext<PatientStateModel>,
-    { payload }: DeletePatient
-  ) {
-    return this.patientService.deletePatient(payload.id).pipe(
-      tap(() => {
-        const state = getState();
-        // const filteredArray = state.patients.filter(
-        //   (item) => item.id !== payload.id
-        // );
-        // setState({
-        //   ...state,
-        //   patients: filteredArray,
-        // });
-      })
-    );
+  deletePatient(ctx: StateContext<PatientStateModel>, action: DeletePatient) {
+    return this.patientService.deletePatient(action.id);
   }
 }

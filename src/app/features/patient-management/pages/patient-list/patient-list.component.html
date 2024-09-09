@@ -1,20 +1,48 @@
-<div class="patient-list">
-    <mat-form-field>
-        <mat-label>Filter Patients</mat-label>
-        <input matInput (keyup)="applyFilter($event)">
+<!-- patient-list.component.html -->
+<table mat-table [dataSource]="patients" class="mat-elevation-z8">
+    <!-- Columns -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let patient"> {{ patient.name }} </td>
+    </ng-container>
 
-    </mat-form-field>
+    <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef> Age </th>
+        <td mat-cell *matCellDef="let patient"> {{ patient.age }} </td>
+    </ng-container>
 
-    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <!-- Columns definitions go here -->
-        <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{patient.name}} </mat-cell>
-        </ng-container>
-        <!-- Other columns... -->
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
+    <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef> Gender </th>
+        <td mat-cell *matCellDef="let patient"> {{ patient.gender }} </td>
+    </ng-container>
 
-    <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-</div>
+    <ng-container matColumnDef="phone">
+        <th mat-header-cell *matHeaderCellDef> Phone </th>
+        <td mat-cell *matCellDef="let patient"> {{ patient.phone }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let patient">
+            <button mat-icon-button (click)="toggleRow(patient)">
+                <mat-icon>expand_more</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <!-- Header & Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Expanded Row Content -->
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"
+        [class.expanded]="expandedElement === row">
+        <td [attr.colspan]="displayedColumns.length">
+            <div class="example-element-detail" *ngIf="expandedElement === row">
+                <p><strong>Additional Info:</strong></p>
+                <p>Email: {{ row.email }}</p>
+                <p>Medical History: {{ row.medicalHistory }}</p>
+            </div>
+        </td>
+    </tr>
+</table>

@@ -12,6 +12,8 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { AppState } from '../+state/app.state';
 import { NavbarInternalComponent } from './components/navbar-internal/navbar-internal.component';
 import { WrapperInternalComponent } from './layout/wrapper-internal/wrapper-internal.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from '../shared/interceptor/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,9 @@ import { WrapperInternalComponent } from './layout/wrapper-internal/wrapper-inte
     NgxsModule.forRoot([AppState]),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 })
 export class CoreModule {}

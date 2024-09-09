@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedMaterialModule } from 'src/app/shared/shared-material.module';
 import { NgxsModule } from '@ngxs/store';
 import { PatientState } from './+state/patient.state';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { PatientState } from './+state/patient.state';
     FlexLayoutModule,
     SharedMaterialModule,
     NgxsModule.forRoot([PatientState]),
+    ReactiveFormsModule,
   ],
 })
 export class PatientManagementModule {}

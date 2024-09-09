@@ -1,1 +1,32 @@
-<p>add-patient works!</p>
+<!-- add-patient.component.html -->
+<form [formGroup]="addPatientForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" required />
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Age</mat-label>
+        <input matInput formControlName="age" type="number" required />
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender">
+            <mat-option value="male">Male</mat-option>
+            <mat-option value="female">Female</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone" required />
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" required />
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" [disabled]="addPatientForm.invalid">Add Patient</button>
+</form>

@@ -1,35 +1,32 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { Select, Store } from '@ngxs/store';
+// patient-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { Patient } from '../../models/patient';
 import { PatientState } from '../../+state/patient.state';
-import { LoadPatients } from '../../+state/patient.actions';
+import { GetPatients } from '../../+state/patient.actions';
 
 @Component({
   selector: 'app-patient-list',
   templateUrl: './patient-list.component.html',
-  styleUrls: ['./patient-list.component.scss'],
+  styleUrls: ['./patient-list.component.css'],
 })
 export class PatientListComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'age', 'gender', 'actions'];
-  dataSource = new MatTableDataSource();
+  patients: Patient[] = [];
+  displayedColumns: string[] = ['name', 'age', 'gender', 'phone', 'actions'];
+  expandedElement: Patient | null;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
-  @Select(PatientState.patients) patients$: Observable<any[]>;
-
-  constructor(private store: Store) {}
-
-  ngOnInit() {
-    this.store.dispatch(new LoadPatients());
-    this.patients$.subscribe((patients) => {
-      this.dataSource.data = patients;
-      this.dataSource.paginator = this.paginator;
-    });
+  constructor(private store: Store) {
+    this.store
+      .select(PatientState.getPatients)
+      .subscribe((x) => (this.patients = x));
   }
 
-  applyFilter(event: KeyboardEvent): void {
-    const filterValue = (event.target as HTMLInputElement)?.value || '';
+  ngOnInit(): void {
+    this.store.dispatch(new GetPatients());
+  }
+
+  toggleRow(element: Patient): void {
+    this.expandedElement = this.expandedElement === element ? null : element;
   }
 }
