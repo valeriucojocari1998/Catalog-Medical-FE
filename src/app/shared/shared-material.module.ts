@@ -27,6 +27,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatExpansionModule,
     FlexLayoutModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
   ],
   exports: [
     MatButtonModule,
@@ -88,6 +90,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatExpansionModule,
     FlexLayoutModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
   ],
 })
 export class SharedMaterialModule {}

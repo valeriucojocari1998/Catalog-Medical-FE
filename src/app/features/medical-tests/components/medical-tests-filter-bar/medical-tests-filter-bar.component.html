@@ -1,0 +1,13 @@
+<div class="filter-bar">
+  <mat-form-field>
+    <mat-label>Search Patient</mat-label>
+    <input type="text" matInput [formControl]="patientControl" [matAutocomplete]="auto" />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPatientSelect($event.option.value)">
+      <mat-option *ngFor="let patient of filteredPatients$ | async" [value]="patient">
+        {{ patient.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="onAddMedicalTest()">Add Medical Test</button>
+</div>

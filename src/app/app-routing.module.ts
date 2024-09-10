@@ -62,6 +62,20 @@ const ROUTES: Routes = [
     canActivate: [AuthGuard], // Only authenticated users can access
   },
   {
+    path: 'medical-tests',
+    component: WrapperInternalComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/medical-tests/medical-tests.module').then(
+            (c) => c.MedicalTestsModule
+          ),
+      },
+    ],
+    canActivate: [AuthGuard], // Only authenticated users can access
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full',
