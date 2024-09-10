@@ -1,5 +1,6 @@
 import { PatientFilterRequest } from '../models/patient-filter-request';
 import { Patient } from '../models/patient';
+import { CreatePatientRequest } from '../models/create-patient-request';
 
 export class GetPatients {
   static readonly type = '[Patient] Get Patients';
@@ -13,7 +14,7 @@ export class GetPatientById {
 
 export class AddPatient {
   static readonly type = '[Patient] Add Patient';
-  constructor(public request: Partial<Patient>) {} // Create request uses partial fields
+  constructor(public request: CreatePatientRequest) {} // Create request uses partial fields
 }
 
 export class UpdatePatient {

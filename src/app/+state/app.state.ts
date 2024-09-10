@@ -4,16 +4,20 @@ import {
   AppLoginAction,
   AppRegisterAction,
   AppLogoutAction,
+  VerifyTokenAction,
+  FetchUserAction,
 } from './app.actions';
 import { throwError } from 'rxjs';
 import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
 import { AuthorizationService } from '../core/services/authorization.service';
 import { LocalStorageService } from '../core/services/local-storage.service';
 import { Router } from '@angular/router';
+import { UserService } from '../core/services/user.service';
 
 export interface AppStateModel {
   token: string | null;
   userName: string | null;
+  userId: string | null; // New userId field
   isAuthenticated: boolean;
 }
 
@@ -22,6 +26,7 @@ export interface AppStateModel {
   defaults: {
     token: null,
     userName: null,
+    userId: null, // Initialize as null
     isAuthenticated: false,
   },
 })
@@ -30,23 +35,24 @@ export class AppState implements NgxsOnInit {
   constructor(
     private authorizationService: AuthorizationService,
     private localStorageService: LocalStorageService,
+    private userService: UserService, // For fetching user data
     private router: Router
   ) {}
 
-  ngxsOnInit(ctx: StateContext<any>): void {
+  ngxsOnInit(ctx: StateContext<AppStateModel>): void {
     const token = this.localStorageService.getToken();
     const userName = this.localStorageService.getUsername();
+
     if (token && userName) {
       this.updateState({
         token,
         userName,
-        isAuthenticated: true,
       });
-      ctx.setState({
+      ctx.patchState({
         token,
         userName,
-        isAuthenticated: true,
       });
+      ctx.dispatch(new VerifyTokenAction());
     }
   }
 
@@ -65,14 +71,59 @@ export class AppState implements NgxsOnInit {
     return state.userName;
   }
 
+  @Selector()
+  static userId(state: AppStateModel): string | null {
+    return state.userId;
+  }
+
   private updateState(state: Partial<AppStateModel>) {
-    this.localStorageService.setToken(state.token!);
-    this.localStorageService.setUsername(state.userName!);
+    if (state.token) {
+      this.localStorageService.setToken(state.token);
+    }
+    if (state.userName) {
+      this.localStorageService.setUsername(state.userName);
+    }
+  }
+
+  @Action(VerifyTokenAction)
+  verifyToken({ patchState, dispatch }: StateContext<AppStateModel>) {
+    return this.authorizationService.VerifyTokenRequest().pipe(
+      tap(() => {
+        patchState({
+          isAuthenticated: true,
+        });
+        dispatch(new FetchUserAction());
+      }),
+      catchError((error) => {
+        patchState({
+          isAuthenticated: false,
+        });
+        this.router.navigate(['/home']);
+        console.error('Token verification failed', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  @Action(FetchUserAction)
+  fetchUser({ patchState }: StateContext<AppStateModel>) {
+    return this.userService.getUserInfo().pipe(
+      tap((user) => {
+        patchState({
+          userId: user.id, // Set userId in the state
+          userName: user.userName, // Set userName from the fetched data
+        });
+      }),
+      catchError((error) => {
+        console.error('Failed to fetch user info', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   @Action(AppLoginAction)
   login(
-    { patchState }: StateContext<AppStateModel>,
+    { patchState, dispatch }: StateContext<AppStateModel>,
     { payload }: AppLoginAction
   ) {
     return this.authorizationService.LoginRequest(payload).pipe(
@@ -80,11 +131,12 @@ export class AppState implements NgxsOnInit {
         const newState: AppStateModel = {
           token: result.token,
           userName: payload.userName,
+          userId: result.userId, // Assuming userId is returned in the login response
           isAuthenticated: true,
         };
         patchState(newState);
         this.updateState(newState);
-        // Reload the page after successful login
+        dispatch(new FetchUserAction()); // Fetch user info after login
         this.router.navigate(['/home-internal']);
       }),
       catchError((error) => {
@@ -101,8 +153,7 @@ export class AppState implements NgxsOnInit {
   ) {
     return this.authorizationService.RegistrationRequest(payload).pipe(
       tap(() => {
-        // On successful registration, dispatch the login action
-        dispatch(new AppLoginAction(payload));
+        dispatch(new AppLoginAction(payload)); // Automatically login after registration
       }),
       catchError((error) => {
         console.error('Registration failed', error);
@@ -113,13 +164,12 @@ export class AppState implements NgxsOnInit {
 
   @Action(AppLogoutAction)
   logout({ setState }: StateContext<AppStateModel>) {
-    console.log('here before');
     return this.authorizationService.LogoutRequest().pipe(
       tap(() => {
-        console.log('here');
         setState({
           token: null,
           userName: null,
+          userId: null,
           isAuthenticated: false,
         });
         this.localStorageService.clear();

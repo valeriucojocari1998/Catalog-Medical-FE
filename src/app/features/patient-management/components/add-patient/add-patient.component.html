@@ -1,0 +1,46 @@
+<div class="add-patient-wrapper">
+
+<h1 mat-dialog-title>Add Patient</h1>
+
+<form [formGroup]="addPatientForm" class="add-patient-form">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="Name">
+    <mat-error *ngIf="addPatientForm.get('name')?.invalid">Name is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Date of Birth</mat-label>
+    <input matInput formControlName="dateOfBirth" [matDatepicker]="picker" placeholder="Date of Birth">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="addPatientForm.get('dateOfBirth')?.invalid">Date of Birth is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender">
+      <mat-option value="Male">Male</mat-option>
+      <mat-option value="Female">Female</mat-option>
+    </mat-select>
+    <mat-error *ngIf="addPatientForm.get('gender')?.invalid">Gender is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Phone Number</mat-label>
+    <input matInput formControlName="phoneNumber" placeholder="Phone Number">
+    <mat-error *ngIf="addPatientForm.get('phoneNumber')?.invalid">Valid Phone Number is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" placeholder="Email">
+    <mat-error *ngIf="addPatientForm.get('email')?.invalid">Valid Email is required</mat-error>
+  </mat-form-field>
+
+  <div class="action-buttons">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()">Save</button>
+  </div>
+</form>
+</div>

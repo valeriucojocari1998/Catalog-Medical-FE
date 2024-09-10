@@ -6,6 +6,4 @@ export interface PatientFilterRequest {
   phoneNumber?: string;
   gender?: string;
   bloodType?: string;
-  dateOfBirthFrom?: Date;
-  dateOfBirthTo?: Date;
 }

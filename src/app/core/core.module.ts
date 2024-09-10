@@ -7,13 +7,12 @@ import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxsModule } from '@ngxs/store';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { AppState } from '../+state/app.state';
 import { NavbarInternalComponent } from './components/navbar-internal/navbar-internal.component';
 import { WrapperInternalComponent } from './layout/wrapper-internal/wrapper-internal.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from '../shared/interceptor/auth-interceptor';
+import { AuthInterceptor } from './interceptor/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -29,7 +28,6 @@ import { AuthInterceptor } from '../shared/interceptor/auth-interceptor';
     FlexLayoutModule,
     MatButtonModule,
     NgxsModule.forRoot([AppState]),
-    NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [

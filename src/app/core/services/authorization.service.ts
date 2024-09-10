@@ -11,9 +11,13 @@ import { environment } from 'src/environments/environment';
 export class AuthorizationService {
   constructor(private http: HttpClient) {}
 
+  public VerifyTokenRequest(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}api/User/verify-token`);
+  }
+
   public LoginRequest(request: LoginRequest): Observable<unknown> {
     return this.http.post<unknown>(
-      `${environment.apiUrl}api/Auth/login`,
+      `${environment.apiUrl}api/User/login`,
       request
     );
   }
@@ -22,7 +26,7 @@ export class AuthorizationService {
     request: RegistrationRequest
   ): Observable<unknown> {
     return this.http.post<unknown>(
-      `${environment.apiUrl}api/Auth/register`,
+      `${environment.apiUrl}api/User/register`,
       request
     );
   }

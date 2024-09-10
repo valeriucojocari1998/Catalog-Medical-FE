@@ -1,0 +1,15 @@
+.add-patient-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+  }
+
+  .add-patient-wrapper {
+    padding: 24px;
+  }
