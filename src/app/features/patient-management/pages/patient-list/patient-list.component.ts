@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { Patient } from '../../models/patient';
 import { PatientState } from '../../+state/patient.state';
-import { AddPatient, GetPatients } from '../../+state/patient.actions';
+import {
+  AddPatient,
+  EditPatient,
+  GetPatients,
+} from '../../+state/patient.actions';
 import {
   animate,
   state,
@@ -14,6 +18,8 @@ import { PatientFilterRequest } from '../../models/patient-filter-request';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPatientComponent } from '../../components/add-patient/add-patient.component';
 import { filter, switchMap } from 'rxjs';
+import { Router } from '@angular/router';
+import { SelectPatient } from 'src/app/features/medical-tests/+state/medical-test.actions';
 
 @Component({
   selector: 'app-patient-list',
@@ -36,7 +42,11 @@ export class PatientListComponent implements OnInit {
   columnsToDisplay: string[] = ['name', 'age', 'gender', 'phone'];
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
 
-  constructor(private store: Store, private dialog: MatDialog) {
+  constructor(
+    private store: Store,
+    private dialog: MatDialog,
+    private router: Router
+  ) {
     this.store
       .select(PatientState.getPatients)
       .subscribe((patients) => (this.patients = patients));
@@ -66,5 +76,25 @@ export class PatientListComponent implements OnInit {
         switchMap((x) => this.store.dispatch(new AddPatient(x)))
       )
       .subscribe();
+  }
+
+  openEditPatientDialog(patient: Patient): void {
+    const dialogRef = this.dialog.open(AddPatientComponent, {
+      data: { patient: patient },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter((x) => !!x),
+        switchMap((x) => this.store.dispatch(new EditPatient(patient.id, x)))
+      )
+      .subscribe();
+  }
+
+  openMedicalTests(patient: Patient): void {
+    this.store
+      .dispatch(new SelectPatient(patient.id))
+      .subscribe(() => this.router.navigate(['medical-tests']));
   }
 }

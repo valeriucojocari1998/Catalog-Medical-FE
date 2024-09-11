@@ -5,6 +5,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngxs/store';
+import { filter } from 'rxjs';
+import { AppState } from 'src/app/+state/app.state';
 import { LoginRequest } from 'src/app/shared/models/requests/login-request';
 
 export interface LoginForm {
@@ -21,10 +24,15 @@ export class LoginFormComponent implements OnInit {
     new EventEmitter<LoginRequest>();
   public loginForm: FormGroup<LoginForm>;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   ngOnInit() {
     this.buildForm();
+    this.store.select(AppState.loginException).subscribe((x) => {
+      if (x) {
+        this.loginForm.controls.password.setErrors({ login: true });
+      }
+    });
   }
 
   buildForm(): void {

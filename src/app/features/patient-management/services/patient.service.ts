@@ -39,6 +39,16 @@ export class PatientService {
     );
   }
 
+  editPatient(
+    patientId: string,
+    request: CreatePatientRequest
+  ): Observable<Patient> {
+    return this.http.post<Patient>(
+      `${environment.apiUrl}api/patients/${patientId}/edit`,
+      request
+    );
+  }
+
   updatePatient(request: Patient): Observable<void> {
     return this.http.put<void>(this.apiUrl, request);
   }

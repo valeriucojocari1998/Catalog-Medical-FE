@@ -19,6 +19,7 @@ export interface AppStateModel {
   userName: string | null;
   userId: string | null; // New userId field
   isAuthenticated: boolean;
+  loginException: string;
 }
 
 @State<AppStateModel>({
@@ -28,6 +29,7 @@ export interface AppStateModel {
     userName: null,
     userId: null, // Initialize as null
     isAuthenticated: false,
+    loginException: '',
   },
 })
 @Injectable()
@@ -76,6 +78,11 @@ export class AppState implements NgxsOnInit {
     return state.userId;
   }
 
+  @Selector()
+  static loginException(state: AppStateModel): string | null {
+    return state.loginException;
+  }
+
   private updateState(state: Partial<AppStateModel>) {
     if (state.token) {
       this.localStorageService.setToken(state.token);
@@ -83,6 +90,10 @@ export class AppState implements NgxsOnInit {
     if (state.userName) {
       this.localStorageService.setUsername(state.userName);
     }
+  }
+
+  private removeFromState() {
+    this.localStorageService.clear();
   }
 
   @Action(VerifyTokenAction)
@@ -99,6 +110,7 @@ export class AppState implements NgxsOnInit {
           isAuthenticated: false,
         });
         this.router.navigate(['/home']);
+        this.removeFromState();
         console.error('Token verification failed', error);
         return throwError(() => error);
       })
@@ -133,6 +145,7 @@ export class AppState implements NgxsOnInit {
           userName: payload.userName,
           userId: result.userId, // Assuming userId is returned in the login response
           isAuthenticated: true,
+          loginException: '',
         };
         patchState(newState);
         this.updateState(newState);
@@ -141,6 +154,7 @@ export class AppState implements NgxsOnInit {
       }),
       catchError((error) => {
         console.error('Login failed', error);
+        patchState({ loginException: 'Wrong password or email' });
         return throwError(() => error);
       })
     );
@@ -171,6 +185,7 @@ export class AppState implements NgxsOnInit {
           userName: null,
           userId: null,
           isAuthenticated: false,
+          loginException: '',
         });
         this.localStorageService.clear();
         this.router.navigate(['/home']);

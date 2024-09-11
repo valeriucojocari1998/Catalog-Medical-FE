@@ -1,24 +1,34 @@
-<h2 mat-dialog-title>Add Medical Test</h2>
-<mat-dialog-content [formGroup]="form">
-  <mat-form-field>
-    <mat-label>Title</mat-label>
-    <input matInput formControlName="title" />
-  </mat-form-field>
+<h1 mat-dialog-title>Add Medical Test</h1>
 
-  <mat-form-field>
-    <mat-label>Description</mat-label>
-    <textarea matInput formControlName="description"></textarea>
-  </mat-form-field>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field class="first-form" appearance="outline" class="full-width">
+      <mat-label>Test Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Date</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="date" />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-</mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
 
-<mat-dialog-actions>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="file-upload-container">
+      <label for="pdfUpload" class="file-upload-label">Upload PDF</label>
+      <input type="file" id="pdfUpload" (change)="onFileChange($event)" />
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onSubmit()">Add</button>
-</mat-dialog-actions>
+  <button mat-flat-button color="primary" [disabled]="!form.valid" (click)="onSubmit()">
+    Submit
+  </button>
+</div>

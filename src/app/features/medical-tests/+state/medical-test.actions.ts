@@ -1,5 +1,5 @@
-export class GetMedicalTests {
-  static readonly type = '[MedicalTest] Get Medical Tests';
+export class SelectPatient {
+  static readonly type = '[MedicalTest] Select a patient from autocomplete';
   constructor(public patientId: string) {}
 }
 

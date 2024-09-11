@@ -6,24 +6,21 @@ import { Patient } from '../models/patient';
 import { tap } from 'rxjs/operators';
 import {
   GetPatients,
-  GetPatientById,
   AddPatient,
   UpdatePatient,
   DeletePatient,
+  EditPatient,
 } from './patient.actions';
-import { PatientFilterRequest } from '../models/patient-filter-request';
 import { AppState } from 'src/app/+state/app.state';
 
 export interface PatientStateModel {
   patients: Patient[];
-  selectedPatient: Patient | null;
 }
 
 @State<PatientStateModel>({
   name: 'patients',
   defaults: {
     patients: [],
-    selectedPatient: null,
   },
 })
 @Injectable()
@@ -35,11 +32,6 @@ export class PatientState {
     return state.patients;
   }
 
-  @Selector()
-  static getSelectedPatient(state: PatientStateModel): Patient | null {
-    return state.selectedPatient;
-  }
-
   @Action(GetPatients)
   getPatients(ctx: StateContext<PatientStateModel>, action: GetPatients) {
     var userId = this.store.selectSnapshot(AppState.userId);
@@ -49,15 +41,6 @@ export class PatientState {
     return this.patientService.getPatients(userId, action.filter).pipe(
       tap((patients: Patient[]) => {
         ctx.patchState({ patients: patients });
-      })
-    );
-  }
-
-  @Action(GetPatientById)
-  getPatientById(ctx: StateContext<PatientStateModel>, action: GetPatientById) {
-    return this.patientService.getPatientById(action.id).pipe(
-      tap((patient: Patient) => {
-        ctx.patchState({ selectedPatient: patient });
       })
     );
   }
@@ -75,6 +58,19 @@ export class PatientState {
         ctx.patchState({ patients: newPatients });
       })
     );
+  }
+
+  @Action(EditPatient)
+  editPatient(ctx: StateContext<PatientStateModel>, action: EditPatient) {
+    return this.patientService
+      .editPatient(action.patientId, action.request)
+      .pipe(
+        tap((x) => {
+          const patients = ctx.getState().patients;
+          const newPatients = [x, ...patients.filter((y) => y.id !== x.id)];
+          ctx.patchState({ patients: newPatients });
+        })
+      );
   }
 
   @Action(UpdatePatient)

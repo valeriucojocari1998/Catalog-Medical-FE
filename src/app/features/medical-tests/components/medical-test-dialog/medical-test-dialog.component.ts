@@ -1,4 +1,3 @@
-// medical-test-dialog.component.ts
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -12,6 +11,7 @@ import { AddMedicalTest } from '../../+state/medical-test.actions';
 })
 export class MedicalTestDialogComponent {
   form: FormGroup;
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -26,10 +26,23 @@ export class MedicalTestDialogComponent {
     });
   }
 
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
   onSubmit(): void {
-    if (this.form.valid) {
-      const test = { ...this.form.value, patientId: this.data.patientId };
-      this.store.dispatch(new AddMedicalTest(test)).subscribe(() => {
+    if (this.form.valid && this.selectedFile) {
+      const formData = new FormData();
+      formData.append('title', this.form.get('title')?.value);
+      formData.append('description', this.form.get('description')?.value);
+      formData.append('date', this.form.get('date')?.value);
+      formData.append('patientId', this.data.patientId);
+      formData.append('file', this.selectedFile);
+
+      this.store.dispatch(new AddMedicalTest(formData)).subscribe(() => {
         this.dialogRef.close(true);
       });
     }

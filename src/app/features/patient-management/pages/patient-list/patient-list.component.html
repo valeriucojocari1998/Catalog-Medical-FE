@@ -1,57 +1,55 @@
-<app-patient-list-filter-bar
-  (filterChanged)="applyFilter($event)"
-  (addPatient)="openAddPatientDialog()">
+<app-patient-list-filter-bar (filterChanged)="applyFilter($event)" (addPatient)="openAddPatientDialog()">
 </app-patient-list-filter-bar>
 
 <table mat-table [dataSource]="patients" multiTemplateDataRows class="mat-elevation-z8">
-    <!-- Columns -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let patient"> {{patient.name}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="age">
-      <th mat-header-cell *matHeaderCellDef> Age </th>
-      <td mat-cell *matCellDef="let patient"> {{patient.age}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="gender">
-      <th mat-header-cell *matHeaderCellDef> Gender </th>
-      <td mat-cell *matCellDef="let patient"> {{patient.gender}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="phone">
-      <th mat-header-cell *matHeaderCellDef> Phone </th>
-      <td mat-cell *matCellDef="let patient"> {{patient.phoneNumber}} </td>
-    </ng-container>
-  
-    <!-- Expandable Row Button -->
-    <ng-container matColumnDef="expand">
-      <th mat-header-cell *matHeaderCellDef aria-label="row actions"> </th>
-      <td mat-cell *matCellDef="let patient">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let patient"> {{patient.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="age">
+    <th mat-header-cell *matHeaderCellDef> Age </th>
+    <td mat-cell *matCellDef="let patient"> {{patient.age}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="gender">
+    <th mat-header-cell *matHeaderCellDef> Gender </th>
+    <td mat-cell *matCellDef="let patient"> {{patient.gender}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef> Phone </th>
+    <td mat-cell *matCellDef="let patient"> {{patient.phoneNumber}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expand">
+    <th mat-header-cell *matHeaderCellDef aria-label="row actions"> </th>
+    <td mat-cell *matCellDef="let patient">
+      <div fxLayout="row">
+        <button mat-icon-button type="button" (click)="openMedicalTests(patient)"><mat-icon
+            class="mat-18">pageview</mat-icon></button>
+        <button mat-icon-button type="button" (click)="openEditPatientDialog(patient)"><mat-icon
+            class="mat-18">edit</mat-icon></button>
         <button mat-icon-button aria-label="expand row" (click)="toggleRow(patient); $event.stopPropagation()">
           <mat-icon>
             {{expandedElement === patient ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}
           </mat-icon>
         </button>
-      </td>
-    </ng-container>
-  
-    <!-- Expanded Row Content -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let patient" [attr.colspan]="columnsToDisplayWithExpand.length">
-        <div class="example-element-detail" [@detailExpand]="expandedElement === patient ? 'expanded' : 'collapsed'">
-          <p>Email: {{patient.email}}</p>
-          <p>Medical History: {{patient.medicalHistory}}</p>
-        </div>
-      </td>
-    </ng-container>
-  
-    <!-- Table Headers and Rows -->
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-    <tr mat-row *matRowDef="let patient; columns: columnsToDisplayWithExpand;" class="example-element-row"
-        [class.example-expanded-row]="expandedElement === patient" (click)="toggleRow(patient)">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-  </table>
-  
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let patient" [attr.colspan]="columnsToDisplayWithExpand.length">
+      <div class="example-element-detail" [@detailExpand]="expandedElement === patient ? 'expanded' : 'collapsed'">
+        <p>Email: {{patient.email}}</p>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+  <tr mat-row *matRowDef="let patient; columns: columnsToDisplayWithExpand;" class="example-element-row"
+    [class.example-expanded-row]="expandedElement === patient" (click)="toggleRow(patient)">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>

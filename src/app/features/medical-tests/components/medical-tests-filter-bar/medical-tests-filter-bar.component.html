@@ -1,5 +1,5 @@
-<div class="filter-bar">
-  <mat-form-field>
+<div class="filter-bar" fxLayout="row" fxFlex="100" fxLayoutAlign="space-between center">
+  <mat-form-field appearance="outline">
     <mat-label>Search Patient</mat-label>
     <input type="text" matInput [formControl]="patientControl" [matAutocomplete]="auto" />
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPatientSelect($event.option.value)">

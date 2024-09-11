@@ -13,6 +13,8 @@ import { NavbarInternalComponent } from './components/navbar-internal/navbar-int
 import { WrapperInternalComponent } from './layout/wrapper-internal/wrapper-internal.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth-interceptor';
+import { PatientState } from '../features/patient-management/+state/patient.state';
+import { MedicalTestState } from '../features/medical-tests/+state/medical-test.state';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,7 @@ import { AuthInterceptor } from './interceptor/auth-interceptor';
     RouterModule,
     FlexLayoutModule,
     MatButtonModule,
-    NgxsModule.forRoot([AppState]),
+    NgxsModule.forRoot([AppState, PatientState, MedicalTestState]),
     NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [

@@ -1,0 +1,36 @@
+.full-width {
+    width: 100%;
+  }
+  
+  mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .file-upload-container {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .file-upload-label {
+    font-size: 14px;
+    margin-right: 16px;
+  }
+  
+  input[type="file"] {
+    display: block;
+    width: 100%;
+  }
+  
+  mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  mat-dialog-actions button {
+    margin-left: 10px;
+  }
+  

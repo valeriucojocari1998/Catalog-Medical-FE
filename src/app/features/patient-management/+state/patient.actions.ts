@@ -14,7 +14,12 @@ export class GetPatientById {
 
 export class AddPatient {
   static readonly type = '[Patient] Add Patient';
-  constructor(public request: CreatePatientRequest) {} // Create request uses partial fields
+  constructor(public request: CreatePatientRequest) {}
+}
+
+export class EditPatient {
+  static readonly type = '[Patient] Edit Patient';
+  constructor(public patientId: string, public request: CreatePatientRequest) {}
 }
 
 export class UpdatePatient {
