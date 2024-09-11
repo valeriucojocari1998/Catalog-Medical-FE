@@ -20,6 +20,11 @@ export interface AppStateModel {
   userId: string | null; // New userId field
   isAuthenticated: boolean;
   loginException: string;
+  name: string | null;
+  surname: string | null;
+  email: string | null;
+  phone: string | null;
+  doctorType: string | null;
 }
 
 @State<AppStateModel>({
@@ -30,6 +35,11 @@ export interface AppStateModel {
     userId: null, // Initialize as null
     isAuthenticated: false,
     loginException: '',
+    name: '',
+    surname: '',
+    email: '',
+    phone: '',
+    doctorType: '',
   },
 })
 @Injectable()
@@ -82,6 +92,26 @@ export class AppState implements NgxsOnInit {
   static loginException(state: AppStateModel): string | null {
     return state.loginException;
   }
+  @Selector()
+  static getName(state: AppStateModel): string | null {
+    return state.name;
+  }
+  @Selector()
+  static getSurname(state: AppStateModel): string | null {
+    return state.surname;
+  }
+  @Selector()
+  static getEmail(state: AppStateModel): string | null {
+    return state.email;
+  }
+  @Selector()
+  static getPhone(state: AppStateModel): string | null {
+    return state.phone;
+  }
+  @Selector()
+  static getDoctorType(state: AppStateModel): string | null {
+    return state.doctorType;
+  }
 
   private updateState(state: Partial<AppStateModel>) {
     if (state.token) {
@@ -122,8 +152,9 @@ export class AppState implements NgxsOnInit {
     return this.userService.getUserInfo().pipe(
       tap((user) => {
         patchState({
-          userId: user.id, // Set userId in the state
-          userName: user.userName, // Set userName from the fetched data
+          ...user,
+          userId: user.id,
+          phone: user.phoneNumber,
         });
       }),
       catchError((error) => {
@@ -146,6 +177,11 @@ export class AppState implements NgxsOnInit {
           userId: result.userId, // Assuming userId is returned in the login response
           isAuthenticated: true,
           loginException: '',
+          name: '',
+          surname: '',
+          email: '',
+          phone: '',
+          doctorType: '',
         };
         patchState(newState);
         this.updateState(newState);
@@ -186,6 +222,11 @@ export class AppState implements NgxsOnInit {
           userId: null,
           isAuthenticated: false,
           loginException: '',
+          name: '',
+          surname: '',
+          email: '',
+          phone: '',
+          doctorType: '',
         });
         this.localStorageService.clear();
         this.router.navigate(['/home']);

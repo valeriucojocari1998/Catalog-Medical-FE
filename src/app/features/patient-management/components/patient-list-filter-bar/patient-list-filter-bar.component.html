@@ -1,38 +1,34 @@
-<form fxLayout="row" fxLayoutGap="10px" [formGroup]="filterForm" (ngSubmit)="onFilter()" class="filter-form">
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>First Name</mat-label>
-    <input matInput formControlName="name" placeholder="Name">
-  </mat-form-field>
+<form fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between center" [formGroup]="filterForm"
+  (ngSubmit)="onFilter()" class="filter-form">
+  <div fxLayout="row" fxLayoutGap="10px">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>First Name</mat-label>
+      <input matInput formControlName="name" placeholder="Name">
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>Last Name</mat-label>
-    <input matInput formControlName="lastName" placeholder="Last Name">
-  </mat-form-field>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Email">
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>MRN</mat-label>
-    <input matInput formControlName="medicalRecordNumber" placeholder="MRN">
-  </mat-form-field>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phoneNumber" placeholder="Phone">
+    </mat-form-field>
 
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email" placeholder="Email">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>Phone</mat-label>
-    <input matInput formControlName="phoneNumber" placeholder="Phone">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" class="filter-field">
-    <mat-label>Gender</mat-label>
-    <mat-select formControlName="gender">
-      <mat-option value="">All</mat-option>
-      <mat-option value="Male">Male</mat-option>
-      <mat-option value="Female">Female</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <button mat-raised-button color="primary" class="filter-button" type="submit">Filter</button>
-  <button mat-raised-button color="accent" class="add-button" type="button" (click)="onAddPatient()">Add Patient</button>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutGap="10px">
+    <button mat-raised-button color="primary" class="filter-button" type="submit">Filter</button>
+    <button mat-raised-button color="primary" class="filter-button" type="button" (click)="onClear()">Clear</button>
+    <button mat-raised-button color="accent" class="add-button" type="button" (click)="onAddPatient()">Add
+      Patient</button>
+  </div>
 </form>

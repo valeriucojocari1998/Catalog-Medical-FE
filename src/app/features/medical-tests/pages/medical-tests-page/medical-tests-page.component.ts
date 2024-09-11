@@ -80,4 +80,8 @@ export class MedicalTestsPageComponent implements OnInit {
       window.open(objectUrl, '_blank');
     });
   }
+
+  sendTestByEmail(test: MedicalTest): void {
+    this.medicalTestService.sendTestByEmail(test.id).subscribe();
+  }
 }

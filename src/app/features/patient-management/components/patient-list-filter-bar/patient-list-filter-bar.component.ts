@@ -16,20 +16,20 @@ export class PatientListFilterBarComponent {
   constructor(private fb: FormBuilder) {
     this.filterForm = this.fb.group({
       name: [''],
-      lastName: [''],
-      medicalRecordNumber: [''],
       email: [''],
       phoneNumber: [''],
       gender: [''],
-      bloodType: [''],
-      dateOfBirthFrom: [''],
-      dateOfBirthTo: [''],
     });
   }
 
   onFilter() {
     const filterValues: PatientFilterRequest = this.filterForm.value;
     this.filterChanged.emit(filterValues);
+  }
+
+  onClear() {
+    this.filterChanged.emit();
+    this.filterForm.reset();
   }
 
   onAddPatient() {

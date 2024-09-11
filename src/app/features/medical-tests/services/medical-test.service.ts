@@ -31,6 +31,12 @@ export class MedicalTestService {
     );
   }
 
+  sendTestByEmail(testId: string): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}api/MedicalTests/send/${testId}`
+    );
+  }
+
   getMedicalTestById(testId: string): Observable<MedicalTest> {
     return this.http.get<MedicalTest>(
       `${environment.apiUrl}api/MedicalTests/${testId}/tests`

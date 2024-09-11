@@ -1,47 +1,47 @@
+@import "../../../../../assets/colors.scss";
+.medical-tests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
 
-  .medical-tests {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  
-  .medical-test-card {
-    width: 300px;
-    margin: 16px;
-  }
-  
-  .mat-card-header {
-    background-color: #f5f5f5;
-    padding: 16px;
-  }
-  
-  .mat-card-title {
-    font-weight: bold;
-    color: #424242;
-  }
-  
-  .mat-card-subtitle {
-    font-size: 14px;
-    color: #757575;
-  }
-  
-  .mat-card-content {
-    padding: 16px;
-    font-size: 16px;
-    color: #616161;
-  }
-  
-  .mat-card-actions {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
-  }
-  
-  button mat-icon {
-    margin-right: 8px;
-  }
-  
-  .mat-elevation-z8 {
-    border-radius: 10px;
-  }
-  
+.medical-test-card {
+  width: 300px;
+  margin: 16px;
+  background-color: $background-second;
+}
+
+.mat-card-header {
+  background-color: #f5f5f5;
+  padding: 16px;
+}
+
+.mat-card-title {
+  font-weight: bold;
+  color: #424242;
+}
+
+.mat-card-subtitle {
+  font-size: 14px;
+  color: #757575;
+}
+
+.mat-card-content {
+  padding: 16px;
+  font-size: 16px;
+  color: #616161;
+}
+
+.mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+button mat-icon {
+  margin-right: 8px;
+}
+
+.mat-elevation-z8 {
+  border-radius: 10px;
+}

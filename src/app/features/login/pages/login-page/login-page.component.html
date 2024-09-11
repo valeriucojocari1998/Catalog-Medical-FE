@@ -1,7 +1,13 @@
-<div fxLayout="column">
-    <mat-tab-group mat-stretch-tabs="true" mat-align-tabs="center">
-        <mat-tab label="Sign-In"><app-login-form (loginOutput)="loginUser($event)"></app-login-form></mat-tab>
-        <mat-tab label="Sign-Up"><app-registration-form
-                (registerOutput)="registerUser($event)"></app-registration-form></mat-tab>
-    </mat-tab-group>
+<div fxlayout="column">
+    <div class="w-100">
+        <mat-tab-group>
+            <mat-tab label="Sign-In">
+                <div class="sign_in">
+                    <app-login-form (loginOutput)="loginUser($event)" />
+                </div>
+            </mat-tab>
+            <mat-tab label="Sign-Up" class="sign_up"><app-registration-form
+                    (registerOutput)="registerUser($event)" /></mat-tab>
+        </mat-tab-group>
+    </div>
 </div>

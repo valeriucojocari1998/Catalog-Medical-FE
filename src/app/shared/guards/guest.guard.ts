@@ -15,7 +15,7 @@ export class GuestGuard implements CanActivate {
     if (!isAuthenticated) {
       return true;
     } else {
-      this.router.navigate(['/home-internal']);
+      this.router.navigate(['/home-internal/profile']);
       return false;
     }
   }
