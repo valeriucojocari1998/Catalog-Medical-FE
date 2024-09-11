@@ -4,6 +4,7 @@ import { WrapperComponent } from './core/layout/wrapper/wrapper.component';
 import { WrapperInternalComponent } from './core/layout/wrapper-internal/wrapper-internal.component';
 import { GuestGuard } from './shared/guards/guest.guard';
 import { AuthGuard } from './shared/guards/auth.guard';
+import { HomeInternalComponent } from './features/home/components/home-internal-component/home-internal-component.component';
 
 const ROUTES: Routes = [
   {
@@ -37,7 +38,7 @@ const ROUTES: Routes = [
   },
   {
     path: 'home-internal',
-    component: WrapperInternalComponent,
+    component: HomeInternalComponent,
     children: [
       {
         path: '',
