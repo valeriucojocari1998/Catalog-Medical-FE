@@ -27,7 +27,7 @@ export interface AppStateModel {
     token: null,
     userName: null,
     userId: null, // Initialize as null
-    isAuthenticated: false,
+    isAuthenticated: true,
   },
 })
 @Injectable()
