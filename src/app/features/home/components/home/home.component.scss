@@ -1,0 +1,49 @@
+@import "../../../../../assets/colors.scss";
+.home-wrapper {
+  width: 100%;
+  overflow: hidden;
+  height: calc(100vh - 144px);
+  background-image: url("../../../../../assets/images/hospital.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+
+  .content {
+    &-container {
+      &-header {
+        color: $primary;
+        font-weight: 600;
+
+        h2 {
+          cursor: default;
+          font-weight: 600;
+          animation: bump-down 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        h1 {
+          cursor: default;
+          font-weight: 600;
+        }
+      }
+      &-body {
+        color: $primary;
+        font-size: 20px;
+        font-weight: 500;
+
+        .my-btn {
+          margin-top: 100px;
+          width: fit-content;
+        }
+      }
+    }
+  }
+}
+
+@keyframes bump-down {
+  from {
+    margin-top: 50px;
+  }
+  to {
+  }
+}

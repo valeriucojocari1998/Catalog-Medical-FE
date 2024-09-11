@@ -10,7 +10,7 @@ import { PatientState } from '../../+state/patient.state';
 @Component({
   selector: 'app-patient-information',
   templateUrl: './patient-information.component.html',
-  styleUrls: ['./patient-information.component.css'],
+  styleUrls: ['./patient-information.component.scss'],
 })
 export class PatientInformationComponent implements OnInit {
   patient?: Patient | null;
